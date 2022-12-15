@@ -1,0 +1,66 @@
+# Advent of Code - Day 02
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0"}
+])
+```
+
+## Input setup
+
+```elixir
+input = Kino.Input.textarea("Input file:")
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+input =
+  input
+  |> Kino.Input.read()
+  |> String.split("\n", trim: true)
+```
+
+## Part 1
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+input
+|> Enum.reduce({_depth = 0, _position = 0}, fn
+  "forward " <> number, {depth, position} ->
+    number = String.to_integer(number)
+    {depth, position + number}
+
+  "down " <> number, {depth, position} ->
+    number = String.to_integer(number)
+    {depth + number, position}
+
+  "up " <> number, {depth, position} ->
+    number = String.to_integer(number)
+    {depth - number, position}
+end)
+|> then(fn {depth, position} -> depth * position end)
+```
+
+## Part 2
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+input
+|> Enum.reduce({_depth = 0, _position = 0, _aim = 0}, fn
+  "forward " <> number, {depth, position, aim} ->
+    number = String.to_integer(number)
+    {depth + aim * number, position + number, aim}
+
+  "down " <> number, {depth, position, aim} ->
+    number = String.to_integer(number)
+    {depth, position, aim + number}
+
+  "up " <> number, {depth, position, aim} ->
+    number = String.to_integer(number)
+    {depth, position, aim - number}
+end)
+|> then(fn {depth, position, _aim} -> depth * position end)
+```

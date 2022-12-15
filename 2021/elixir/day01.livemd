@@ -1,0 +1,42 @@
+# Advent of Code - Day 01
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0"}
+])
+```
+
+## Input setup
+
+```elixir
+input = Kino.Input.textarea("Input file:")
+```
+
+```elixir
+input =
+  input
+  |> Kino.Input.read()
+  |> String.splitter("\n", trim: true)
+  |> Enum.map(&String.to_integer/1)
+```
+
+## Part 1
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+input
+|> Enum.chunk_every(2, 1, :discard)
+|> Enum.count(fn [left, right] -> right > left end)
+```
+
+## Part 2
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+input
+|> Enum.chunk_every(3, 1, :discard)
+|> Enum.chunk_every(2, 1, :discard)
+|> Enum.count(fn [[left, m1, m2], [m1, m2, right]] -> right > left end)
+```
